@@ -9,19 +9,24 @@ def get_random_points (img, alpha):
 
     if len(img.shape) == 3 and img.shape[2] == 3:
         # should be OK in standard BGR format
-        img = cv2.cvtColor (img, cv2.COLOR_BGR2GRAY)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     # -----fill in your implementation here --------
 
-
-
+    points_x = np.random.randint(img.shape[0], size=(alpha, 1))
+    points_y = np.random.randint(img.shape[1], size=(alpha, 1))
+    print(points_x.shape)
+    points = np.concatenate((points_x, points_y), axis=1)
+    print(points_x)
     # ----------------------------------------------
-    
+
     return points
 
 
 # start of some code for testing get_random_points()
 if __name__ == "__main__":
     img = cv2.imread ("../data/bedroom/sun_aiydcpbgjhphuafw.jpg")
-    print (get_random_points (img, 50))
+    points = get_random_points(img, 50)
+
+    print(points)
 

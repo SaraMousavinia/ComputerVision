@@ -1,6 +1,9 @@
 
 from utils import *
 import cv2
+import numpy as np
+
+from python.utils import fspecial_gaussian, imfilter, fspecial_log
 
 
 def create_filterbank():
@@ -14,8 +17,8 @@ def create_filterbank():
     filterBank = []
 
     for scale in gaussianScales:
-        filter = fspecial_gaussian (2 * np.ceil(scale * 2.5)+1, scale)
-        filterBank.append (filter)
+        filter = fspecial_gaussian(2 * np.ceil(scale * 2.5)+1, scale)
+        filterBank.append(filter)
 
 ##    # can produce same gaussian kernel with OpenCV as follows (for smallest scale):
 #    for i in range(len(scales)):
@@ -25,18 +28,18 @@ def create_filterbank():
 ##        print (sum(sum(fb[i] - gauss2d[i])))
 
     for scale in logScales:
-        filter = fspecial_log (2 * np.ceil(scale * 2.5)+1, scale)
-        filterBank.append (filter)
+        filter = fspecial_log(2 * np.ceil(scale * 2.5)+1, scale)
+        filterBank.append(filter)
 
     for scale in dxScales:
-        filter0 = fspecial_gaussian (2 * np.ceil(scale * 2.5) + 1, scale)
-        filter = imfilter (filter0, np.array([[-1, 0, 1]]))
-        filterBank.append (filter)
+        filter0 = fspecial_gaussian(2 * np.ceil(scale * 2.5) + 1, scale)
+        filter = imfilter(filter0, np.array([[-1, 0, 1]]))
+        filterBank.append(filter)
 
     for scale in dyScales:
         filter0 = fspecial_gaussian (2 * np.ceil(scale * 2.5) + 1, scale)
-        filter = imfilter (filter0, np.array([[-1], [0], [1]]))
-        filterBank.append (filter)
+        filter = imfilter(filter0, np.array([[-1], [0], [1]]))
+        filterBank.append(filter)
 
     return filterBank
 
@@ -45,6 +48,6 @@ def create_filterbank():
 if __name__ == "__main__":
     fb = create_filterbank()
 
-#    for i in range(len(fb)):
-#        print (fb[i].shape)
+    for i in range(len(fb)):
+       print(fb[i].shape)
 

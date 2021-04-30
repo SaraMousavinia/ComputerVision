@@ -11,7 +11,7 @@ def get_dictionary (imgPaths, alpha, K, method):
 
     filterBank = create_filterbank()
 
-    pixelResponses = np.zeros ((alpha * len(imgPaths), 3 * len(filterBank)))
+    pixelResponses = np.zeros((alpha * len(imgPaths), 3 * len(filterBank)))
 
     for i, path in enumerate(imgPaths):
         print ('-- processing %d/%d' % (i, len(imgPaths)))
@@ -34,6 +34,6 @@ def get_dictionary (imgPaths, alpha, K, method):
 #    ret,label,dictionary=cv2.kmeans(pixelResponses,K,None,criteria,10,cv2.KMEANS_RANDOM_CENTERS)
 
     # sklearn K-Means
-    dictionary = KMeans (n_clusters=K, random_state=0).fit(pixelResponses).cluster_centers_
+    dictionary = KMeans(n_clusters=K, random_state=0).fit(pixelResponses).cluster_centers_
     return dictionary
 

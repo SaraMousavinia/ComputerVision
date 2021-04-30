@@ -10,7 +10,13 @@ def get_harris_points (img, alpha, k):
 
     # -----fill in your implementation here --------
 
+    sobel_aperture = 3
+    block_size = 2
+    corner_harris = cv2.cornerHarris(img, block_size, sobel_aperture, k)
 
+    indices = (-corner_harris).argpartition(alpha, axis=None)[:alpha]
+    points_x, points_y = np.unravel_index(indices, corner_harris.shape)
+    points = np.concatenate(([points_x], [points_y]), axis=0).T
 
     # ----------------------------------------------
     
@@ -19,6 +25,8 @@ def get_harris_points (img, alpha, k):
 
 # start of some code for testing get_harris_points()
 if __name__ == "__main__":
-    img = cv2.imread ("../data/bedroom/sun_aiydcpbgjhphuafw.jpg")
-    print (get_harris_points (img, 50, 0.04))
+    img = cv2.imread("../data/bedroom/sun_aiydcpbgjhphuafw.jpg")
+    points = get_harris_points(img, 50, 0.04)
+    print(points.shape)
+    print(points)
 
