@@ -14,18 +14,14 @@ def extract_filter_responses(img, filterBank):
     img_a = img[:, :, 1]
     img_b = img[:, :, 2]
 
-    # for i in filterBank:
-    # filterResponses = []  # {}
-    # for i in filterBank:
-    #     filterResponses.append(cv2.filter2D(img, -1, filterBank[i]))
-
     filterResponses_l = [cv2.filter2D(img_l, -1, fb) for fb in filterBank]
     filterResponses_a = [cv2.filter2D(img_a, -1, fb) for fb in filterBank]
     filterResponses_b = [cv2.filter2D(img_b, -1, fb) for fb in filterBank]
 
+    filterResponses = [cv2.merge((filterResponses_l[i], filterResponses_a[i], filterResponses_b[i])) for i in range(len(filterBank))]
     # ----------------------------------------------
 
-    return filterResponses_l, filterResponses_a, filterResponses_b
+    return filterResponses
 
 # start of some code for testing extract_filter_responses()
 if __name__ == "__main__":
@@ -38,14 +34,11 @@ if __name__ == "__main__":
 
     filterResponses = extract_filter_responses(img, fb)
     cv2.imshow("original", img)
-    print(len(filterResponses[0]), "123")
-    print(len(filterResponses[1]), "123")
-    print(len(filterResponses[2]), "123")
-    # for i in range(0, 20):
-    #     cv2.imshow("result_" + str(i), filterResponses[2][i])
+
+    for i in range(0, 20):
+        cv2.imshow("result_" + str(i), cv2.cvtColor (filterResponses[i], cv2.COLOR_BGR2GRAY))
 
     while True:
         k = cv2.waitKey(50) & 0xFF  # 0xFF? To get the lowest byte.
         if k in [27, 32]: break
     cv2.destroyAllWindows()
-
