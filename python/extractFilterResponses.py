@@ -1,5 +1,6 @@
 import cv2
 from python.createFilterBank import create_filterbank
+import numpy as np
 
 def extract_filter_responses(img, filterBank):
 
@@ -9,7 +10,6 @@ def extract_filter_responses(img, filterBank):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2Lab)
 
     # -----fill in your implementation here --------
-
     img_l = img[:, :, 0]
     img_a = img[:, :, 1]
     img_b = img[:, :, 2]
@@ -18,7 +18,7 @@ def extract_filter_responses(img, filterBank):
     filterResponses_a = [cv2.filter2D(img_a, -1, fb) for fb in filterBank]
     filterResponses_b = [cv2.filter2D(img_b, -1, fb) for fb in filterBank]
 
-    filterResponses = [cv2.merge((filterResponses_l[i], filterResponses_a[i], filterResponses_b[i])) for i in range(len(filterBank))]
+    filterResponses = np.append(filterResponses_b, np.append(filterResponses_l, filterResponses_a, axis=0),  axis=0)
     # ----------------------------------------------
 
     return filterResponses
@@ -35,8 +35,15 @@ if __name__ == "__main__":
     filterResponses = extract_filter_responses(img, fb)
     cv2.imshow("original", img)
 
-    for i in range(0, 20):
-        cv2.imshow("result_" + str(i), cv2.cvtColor (filterResponses[i], cv2.COLOR_BGR2GRAY))
+    # for i in range(0, 60):
+        # print(filterResponses[i].shape)
+        # cv2.imshow("result_" + str(i), filterResponses[i])
+
+    # for i in range(0, 20):
+        # cv2.imshow("result_" + str(i), filterResponses[i][:, :, 2])
+
+    # for i in range(0, 20):
+    #     cv2.imshow("result_" + str(i), cv2.cvtColor(cv2.cvtColor(filterResponses[i], cv2.COLOR_Lab2BGR), cv2.COLOR_BGR2GRAY))
 
     while True:
         k = cv2.waitKey(50) & 0xFF  # 0xFF? To get the lowest byte.

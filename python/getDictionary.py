@@ -10,37 +10,40 @@ from sklearn.cluster import KMeans
 CORNER_HARRIS = 'Harris'
 RANDOM = 'Random'
 
+
 def get_dictionary(imgPaths, alpha, K, method=CORNER_HARRIS):
 
     filterBank = create_filterbank()
-
     pixelResponses = np.zeros((alpha * len(imgPaths), 3 * len(filterBank)))
-
+    row_counter = 0
+    print(pixelResponses.shape)
     for i, path in enumerate(imgPaths):
         print('-- processing %d/%d' % (i, len(imgPaths)))
-        image = cv2.imread ('../data/%s' % path)
+        image = cv2.imread('../data/%s' % path)
 
         # TODO: Use RGB instead of BGR?
         # should be OK in standard BGR format
-        # image = cv2.cvtColor (image, cv2.COLOR_BGR2RGB)  # convert the image from bgr to rgb
+        # image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # convert the image from bgr to rgb
         
         # -----fill in your implementation here --------
 
         filterResponses = extract_filter_responses(image, filterBank)
 
         if method == CORNER_HARRIS:
-            get_harris_points(filterResponses, alpha)
+            points = [get_harris_points(filterResponses[i], alpha) for i in range(60)]
         elif method == RANDOM:
-            get_random_points(filterResponses, alpha)
+            points = [get_random_points(filterResponses[i], alpha) for i in range(60)]
         else:
             raise Exception("Incompatible method")
 
-
-
-
-
-
-
+        # For each row in pixelResponses we first get
+        # Points contains the coordinates of the value in the filterResponses that we want to put in the pixelResponses
+        for j in range(alpha):
+            for k in range(len(points)):
+                point_x = points[k][j][0]
+                point_y = points[k][j][1]
+                pixelResponses[row_counter][k] = filterResponses[k][point_x, point_y]
+            row_counter += 1
 
         # ----------------------------------------------
 
@@ -60,10 +63,10 @@ if __name__ == "__main__":
 
     imgPaths = [img1_path, img2_path]
     K = 100
-    method = None
+    method = CORNER_HARRIS
 
-    result = get_dictionary(imgPaths, 50, K, method)
-
+    dictionary = get_dictionary(imgPaths, 50, K, method)
+    print(dictionary.shape)
     while True:
         k = cv2.waitKey(50) & 0xFF  # 0xFF? To get the lowest byte.
         if k in [27, 32]: break
