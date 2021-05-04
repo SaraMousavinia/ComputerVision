@@ -44,7 +44,7 @@ def get_dictionary(imgPaths, alpha, K, method=CORNER_HARRIS):
                 pixelResponses[row_counter][k] = filterResponses[k][point_x, point_y]
             row_counter += 1
 
-        # ----------------------------------------------
+        # ---------------------------------------------------------------
 
     # can use either of these K-Means approaches...  (i.e. delete the other one)
     # OpenCV K-Means
