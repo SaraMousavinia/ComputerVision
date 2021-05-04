@@ -60,10 +60,12 @@ if __name__ == '__main__':
     fb = create_filterbank()
     img = cv2.imread("../data/desert/sun_adpbjcrpyetqykvt.jpg")
 
+    cv2.imshow("Original", img)
+
     # Harris Dictionary
     dictionary = pickle.load(open("dictionaryHarris.pkl", 'rb'))
     wordMap = get_visual_words(img, dictionary, fb)
-    result = label2rgb(wordMap, image=img)
+    result = label2rgb(wordMap)
 
     result = cv2.cvtColor(np.float32(result), cv2.COLOR_RGB2BGR)
     cv2.imshow("Result Harris", result)
@@ -72,7 +74,7 @@ if __name__ == '__main__':
     # Random Dictionary
     dictionary = pickle.load(open("dictionaryRandom.pkl", 'rb'))
     wordMap = get_visual_words(img, dictionary, fb)
-    result = label2rgb(wordMap, image=img)
+    result = label2rgb(wordMap)
 
     result = cv2.cvtColor(np.float32(result), cv2.COLOR_RGB2BGR)
     cv2.imshow("Result Random", result)
