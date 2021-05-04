@@ -15,9 +15,7 @@ def get_random_points (img, alpha):
 
     points_x = np.random.randint(img.shape[0], size=(alpha, 1))
     points_y = np.random.randint(img.shape[1], size=(alpha, 1))
-    print(points_x.shape)
     points = np.concatenate((points_x, points_y), axis=1)
-    print(points_x)
     # ----------------------------------------------
 
     return points
@@ -27,6 +25,5 @@ def get_random_points (img, alpha):
 if __name__ == "__main__":
     img = cv2.imread ("../data/bedroom/sun_aiydcpbgjhphuafw.jpg")
     points = get_random_points(img, 50)
-
     print(points)
 

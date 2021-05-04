@@ -16,7 +16,6 @@ def get_dictionary(imgPaths, alpha, K, method=CORNER_HARRIS):
     filterBank = create_filterbank()
     pixelResponses = np.zeros((alpha * len(imgPaths), 3 * len(filterBank)))
     row_counter = 0
-    print(pixelResponses.shape)
     for i, path in enumerate(imgPaths):
         print('-- processing %d/%d' % (i, len(imgPaths)))
         image = cv2.imread('../data/%s' % path)
@@ -66,7 +65,9 @@ if __name__ == "__main__":
     method = CORNER_HARRIS
 
     dictionary = get_dictionary(imgPaths, 50, K, method)
-    print(dictionary.shape)
+    print(dictionary.shape, "+++")
+
+
     while True:
         k = cv2.waitKey(50) & 0xFF  # 0xFF? To get the lowest byte.
         if k in [27, 32]: break
