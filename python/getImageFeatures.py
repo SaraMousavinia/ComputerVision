@@ -1,9 +1,6 @@
 import pickle
-
 import cv2
 import numpy as np
-from matplotlib import pyplot as plt
-from sklearn import preprocessing
 
 
 def get_image_features(wordMap, dictionarySize):
