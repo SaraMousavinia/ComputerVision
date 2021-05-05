@@ -1,11 +1,11 @@
 import cv2
-from python.createFilterBank import create_filterbank
+from createFilterBank import create_filterbank
 import numpy as np
 
 def extract_filter_responses(img, filterBank):
 
-    # if len(img.shape) == 2:
-    #     img = cv2.merge([img, img, img])
+    if len(img.shape) == 2:
+        img = cv2.merge([img, img, img])
 
     img = cv2.cvtColor(img, cv2.COLOR_BGR2Lab)
 

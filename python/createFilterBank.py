@@ -3,7 +3,7 @@ from utils import *
 import cv2
 import numpy as np
 
-from python.utils import fspecial_gaussian, imfilter, fspecial_log
+from utils import fspecial_gaussian, imfilter, fspecial_log
 
 
 def create_filterbank():

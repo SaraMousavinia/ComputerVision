@@ -5,8 +5,8 @@ from scipy.spatial.distance import cdist
 import cv2
 from skimage.color import label2rgb
 
-from python.createFilterBank import create_filterbank
-from python.extractFilterResponses import extract_filter_responses
+from createFilterBank import create_filterbank
+from extractFilterResponses import extract_filter_responses
 
 
 def get_visual_words(img, dictionary, filterBank):
@@ -58,7 +58,7 @@ def get_visual_words(img, dictionary, filterBank):
 if __name__ == '__main__':
 
     fb = create_filterbank()
-    img = cv2.imread("../data/desert/sun_adpbjcrpyetqykvt.jpg")
+    img = cv2.imread("../data/airport/sun_aesovualhburmfhn.jpg")
 
     cv2.imshow("Original", img)
 

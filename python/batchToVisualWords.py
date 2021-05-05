@@ -1,10 +1,24 @@
 import multiprocessing
 import pickle
 import math
-import cv2
-from python.createFilterBank import create_filterbank
-from python.getVisualWords import get_visual_words
 
+import cv2
+from createFilterBank import create_filterbank
+from getVisualWords import get_visual_words
+
+def worker_to_visual_words(wind, all_imagenames, num_cores, filterBank, dictionary, point_method):
+    print("############")
+    for j in range(math.ceil(len(all_imagenames) / num_cores)):
+        img_ind = j * num_cores + wind
+        if img_ind < len(all_imagenames):
+            img_name = all_imagenames[img_ind]
+            print ('converting %d-th image %s to visual words' % (img_ind, img_name))
+            image = cv2.imread('../data/%s' % img_name)
+            # should be OK in standard BGR format
+            #                image = cv2.cvtColor (image, cv2.COLOR_BGR2RGB)  # convert the image from bgr to rgb
+            wordMap = get_visual_words(image, dictionary, filterBank)
+            print(img_name[:-4], point_method, ".pkl")
+            pickle.dump(wordMap, open('../data/%s_%s.pkl' % (img_name[:-4], point_method), 'wb'))
 
 def batch_to_visual_words (num_cores, point_method):
 
@@ -13,25 +27,28 @@ def batch_to_visual_words (num_cores, point_method):
     meta = pickle.load(open('../data/traintest.pkl', 'rb'))
     all_imagenames = meta['all_imagenames']
 
-    dictionary = pickle.load (open('dictionary%s.pkl' % point_method, 'rb'))
+    dictionary = pickle.load(open('dictionary%s.pkl' % point_method, 'rb'))
 
     filterBank = create_filterbank()
 
-    def worker_to_visual_words(wind):
-        for j in range(math.ceil(len(all_imagenames) / num_cores)):
-            img_ind = j * num_cores + wind
-            if img_ind < len(all_imagenames):
-                img_name = all_imagenames[img_ind]
-                print ('converting %d-th image %s to visual words' % (img_ind, img_name))
-                image = cv2.imread ('../data/%s' % img_name)
-                # should be OK in standard BGR format
-#                image = cv2.cvtColor (image, cv2.COLOR_BGR2RGB)  # convert the image from bgr to rgb
-                wordMap = get_visual_words(image, dictionary, filterBank)
-                pickle.dump(wordMap, open('../data/%s_%s.pkl' % (img_name[:-4], point_method), 'wb'))
+#     def worker_to_visual_words(wind):
+#         print("############")
+#         for j in range(math.ceil(len(all_imagenames) / num_cores)):
+#             img_ind = j * num_cores + wind
+#             if img_ind < len(all_imagenames):
+#                 img_name = all_imagenames[img_ind]
+#                 print ('converting %d-th image %s to visual words' % (img_ind, img_name))
+#                 image = cv2.imread('../data/%s' % img_name)
+#                 # should be OK in standard BGR format
+# #                image = cv2.cvtColor (image, cv2.COLOR_BGR2RGB)  # convert the image from bgr to rgb
+#                 wordMap = get_visual_words(image, dictionary, filterBank)
+#                 print(img_name[:-4], point_method, ".pkl")
+#                 pickle.dump(wordMap, open('../data/%s_%s.pkl' % (img_name[:-4], point_method), 'wb'))
 
     workers = []
     for i in range(num_cores):
-        workers.append(multiprocessing.Process(target=worker_to_visual_words, args=(i,)))
+        workers.append(multiprocessing.Process(target=worker_to_visual_words, args=(i, all_imagenames, num_cores, filterBank, dictionary, point_method)))
+
     for worker in workers:
         worker.start()
 
@@ -42,4 +59,6 @@ def batch_to_visual_words (num_cores, point_method):
 
 
 if __name__ == "__main__":
+
     batch_to_visual_words(num_cores=6, point_method='Random')
+    # batch_to_visual_words(num_cores=6, point_method='Harris')
