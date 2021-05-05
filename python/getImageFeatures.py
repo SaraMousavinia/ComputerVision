@@ -6,6 +6,9 @@ def get_image_features (wordMap, dictionarySize):
 
     # -----fill in your implementation here --------
 
+    h = None
+
+
 
     # ----------------------------------------------
     

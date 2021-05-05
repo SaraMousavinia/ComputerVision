@@ -27,29 +27,6 @@ def get_visual_words(img, dictionary, filterBank):
             # Add smallest distance
             wordMap[x, y] = result.min()
 
-
-
-    # for i in range(100):
-    #     temp = dictionary[i]
-    #     for j in range(60):
-    #
-    #
-    #
-    #         pixelValue = filterResponses[i] #[x][y]
-    #         # pred = dictionary.predict(pixelValue)
-    #         print(pixelValue.shape)
-    #         # result = cdist(filterResponses[j], dictionary)
-    #         print(result)
-            # result = cdist(dictionary, pixelValue)
-
-        # result = cdist(dictionary, filterResponses[i])
-        # print(result.shape,  "resultshape")
-        # wordMap.append(result)
-
-    print(wordMap.shape)
-    # Y = cdist(None, None, metric='euclidean')
-
-
     # ----------------------------------------------
 
     return wordMap

@@ -7,7 +7,6 @@ from createFilterBank import create_filterbank
 from getVisualWords import get_visual_words
 
 def worker_to_visual_words(wind, all_imagenames, num_cores, filterBank, dictionary, point_method):
-    print("############")
     for j in range(math.ceil(len(all_imagenames) / num_cores)):
         img_ind = j * num_cores + wind
         if img_ind < len(all_imagenames):
@@ -17,7 +16,6 @@ def worker_to_visual_words(wind, all_imagenames, num_cores, filterBank, dictiona
             # should be OK in standard BGR format
             #                image = cv2.cvtColor (image, cv2.COLOR_BGR2RGB)  # convert the image from bgr to rgb
             wordMap = get_visual_words(image, dictionary, filterBank)
-            print(img_name[:-4], point_method, ".pkl")
             pickle.dump(wordMap, open('../data/%s_%s.pkl' % (img_name[:-4], point_method), 'wb'))
 
 def batch_to_visual_words (num_cores, point_method):
@@ -60,5 +58,5 @@ def batch_to_visual_words (num_cores, point_method):
 
 if __name__ == "__main__":
 
-    batch_to_visual_words(num_cores=6, point_method='Random')
-    # batch_to_visual_words(num_cores=6, point_method='Harris')
+    # batch_to_visual_words(num_cores=6, point_method='Random')
+    batch_to_visual_words(num_cores=6, point_method='Harris')
